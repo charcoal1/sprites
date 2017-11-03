@@ -1,9 +1,12 @@
-var s = 1;
+var s = 1; //state of sprite
+var bg = 200; // default background
+var brushes = []; //from other code
 
 
 function setup() {
    createCanvas(700, 700);
    background(200);
+   frameRate(35);
 }
 
 function preload() {
@@ -14,65 +17,101 @@ function preload() {
 }
 
 function draw() {
+   background(bg);
+
+   for (var i = 0; i < brushes.length; i++) {
+      brushes[i].display();
+   }
+
+
+   var mX = mouseX;
+   var mY = mouseY;
    if (keyIsPressed) {
-      fill(mouseX, mouseY, 100);
-      noStroke();
-      rect(0, 0, 710, 710);
+      if (keyCode == ENTER || keyCode == RETURN) { // change BG when Enter is pressed
+         bg = color(mouseX, mouseY, 100);
+         noStroke();
+         rect(0, 0, 710, 710);
+      }
+      if (key === 's') {
+         saveCanvas('Drawing', 'png'); // file name  - how to get it to increase in value
+         // 'Yes'+1, '.png'
+
+
+      }
    }
 
-   //background(175);
-   if (s == 1) {
-      spriteOne();
-   } else if (s == 2) {
-      spriteTwo();
-   } else if (s == 3) {
-      spriteThree();
-   } else {
-      spriteOne();
-   }
+   /*
+      //state of sprite
+      if (s == 1) {
+         spriteOne();
+      }
+      else if (s == 2) {
+         spriteTwo();
+      } else if (s == 3) {
+         spriteThree();
+      } else if (s == 4) {
+         spriteFour();
+      } else if (s == 5) {
+         spriteFive();
+      } else {
+         spriteOne();
+      }
+      
 
 
-   function spriteOne() {
-      fill(mouseX - 200, mouseY - 200, 255)
-         //rect(mouseX, mouseY, 100, 100);
-      animation(cowboy, mouseX, mouseY);
-   }
+      function spriteOne() { //boyt
+         //animation(boyt, mouseX, mouseY);
+      }
 
-   function spriteTwo() {
-      fill(mouseX, mouseY, 255)
-         //triangle(mouseX, mouseY, mouseX + 40, mouseY + 40, mouseX + 40, mouseY - 40);
-      animation(gorl, mouseX, mouseY);
-   }
+      function spriteTwo() { //square
+         fill(0, random(30, 40), random(150, 200), 30);
+         noStroke();
+         rect(mouseX, mouseY, 30, 30);
+      }
 
-   function spriteThree() {
-      fill(mouseX, mouseY, 255)
-         //ellipse(mouseX, mouseY, 100, 100);
-      animation(boyt, mouseX, mouseY);
-   }
+      function spriteThree() { //gorl
+         animation(gorl, mouseX, mouseY);
+      }
 
-   noFill();
+      function spriteFour() { //circle
+         fill(random(200, 255), random(100), 0, 10);
+         noStroke();
+         ellipse(mouseX, mouseY, 75);
+      }
+
+      function spriteFive() { //cowboy
+         animation(cowboy, mouseX, mouseY);
+      }
+      */
+
+
+   noFill(); // color frame
    stroke(255, 200, 0);
    strokeWeight(3);
    rect(1, 1, 697, 697);
 
+   append(brushes, new Brush(mouseX, mouseY));
 
-   /*
-   if (mouseIsPressed) {
-      print("it's clicked :)");
-      s = s + 1;
-      if (s > 3) {
-         s = 1;
-      }
+} // end of draw
+
+function Brush(x, y) {
+   this.x = x;
+   this.y = y;
+   this.display = function() {
+      animation(boyt, this.x, this.y);
    }
-   */
-
-
 }
 
 function mousePressed() {
+   append(brushes, new Brush(mouseX, mouseY));
+}
+
+/*
+function mousePressed() { // when clicked
    print("it's clicked :)");
    s = s + 1;
-   if (s > 3) {
+   if (s > 5) {
       s = 1;
    }
 }
+*/
